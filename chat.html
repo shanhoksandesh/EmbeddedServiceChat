@@ -1,38 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <script type="text/javascript">
-        function initEmbeddedMessaging() {
-            try {
-                if (typeof embeddedservice_bootstrap === "undefined") {
-                    console.error("embeddedservice_bootstrap is not defined. Ensure Salesforce script is loaded.");
-                    return;
-                }
+<script type='text/javascript'>
+	function initEmbeddedMessaging() {
+		try {
+			embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
 
-                embeddedservice_bootstrap.settings.language = 'en_US'; // Set language
-                console.log("Initializing Embedded Messaging...");
-
-                embeddedservice_bootstrap.init(
-                    '00D9E0000000pto',
-                    'Hospital_Enquiry_Webchat',
-                    'https://nuffieldhealth-crm--crmqa.sandbox.my.site.com/ESWHospitalEnquiryWebch1740736256142',
-                    {
-                        scrt2URL: 'https://nuffieldhealth-crm--crmqa.sandbox.my.salesforce-scrt.com'
-                    }
-                );
-
-                console.log("Embedded Messaging initialized successfully.");
-            } catch (err) {
-                console.error("Error loading Embedded Messaging:", err.message, err.stack);
-            }
-        }
-
-        window.onload = function () {
-            initEmbeddedMessaging();
-        };
-    </script>
-</head>
-<body>
-    <h1>Webchat Testing Page</h1>
-</body>
-</html>
+			embeddedservice_bootstrap.init(
+				'00D9E0000000pto',
+				'Hospital_Enquiry_Webchat',
+				'https://nuffieldhealth-crm--crmqa.sandbox.my.site.com/ESWHospitalEnquiryWebch1740736256142',
+				{
+					scrt2URL: 'https://nuffieldhealth-crm--crmqa.sandbox.my.salesforce-scrt.com'
+				}
+			);
+		} catch (err) {
+			console.error('Error loading Embedded Messaging: ', err);
+		}
+	};
+</script>
+<script type='text/javascript' src='https://nuffieldhealth-crm--crmqa.sandbox.my.site.com/ESWHospitalEnquiryWebch1740736256142/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
