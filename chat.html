@@ -1,112 +1,19 @@
-<html>
-  <script type="text/javascript">
-    function initEmbeddedMessaging() {
-        try {
-            console.log("Initializing Embedded Messaging...");
-            embeddedservice_bootstrap.settings.language = 'en_US'; // Set language
-            
-            // Initialize Web Chat
-            embeddedservice_bootstrap.init(
-                '00D9E0000000pto', // Your Org ID
-                'Hospital_Enquiry_Webchat', // Deployment Name
-                'https://nuffieldhealth-crm--crmqa.sandbox.my.site.com/ESWHospitalEnquiryWebch1740736256142',
-                {
-                    scrt2URL: 'https://nuffieldhealth-crm--crmqa.sandbox.my.salesforce-scrt.com'
-                }
-            );
-            console.log("Embedded Messaging Initialized.");
-        } catch (err) {
-            console.error('Error loading Embedded Messaging: ', err);
-        }
-    }
+<script type='text/javascript'>
+	function initEmbeddedMessaging() {
+		try {
+			embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
 
-    // Function to check Business Hours
-    function checkBusinessHours() {
-        let now = new Date();
-        let day = now.getDay(); // 0=Sunday, 1=Monday, ..., 6=Saturday
-        let hour = now.getHours();
-
-        console.log("Checking business hours. Day: ", day, " Hour: ", hour);
-
-        // Define Business Hours (Monday to Friday, 9 AM - 6 PM)
-        if (day >= 1 && day <= 5 && hour >= 9 && hour < 18) {
-            console.log("Inside business hours.");
-            return true; // Within Business Hours
-        }
-        console.log("Outside business hours.");
-        return false; // Outside Business Hours
-    }
-
-    // Function to Show Messages Based on Availability
-    function handleChatAvailability() {
-        let businessHours = checkBusinessHours();
-        let chatContainer = document.getElementById("chatContainer");
-        let messageContainer = document.getElementById("offlineMessage");
-        let webFormContainer = document.getElementById("webForm");
-
-        console.log("Handling Chat Availability...");
-
-        if (typeof embedded_svc === "undefined") {
-            console.error("embedded_svc is not defined! Check Salesforce Web Chat script.");
-            return;
-        }
-
-        embedded_svc.liveAgentAPI.getQueueAvailability("Your_Queue_Name", function(result) {
-            console.log("Agent availability result: ", result);
-
-            if (!businessHours) {
-                // Business Hours Closed
-                messageContainer.innerHTML = "Our business hours are from 9 AM - 6 PM. Please submit your query below.";
-                webFormContainer.style.display = "block";
-                chatContainer.style.display = "none";
-            } else if (!result.isAvailable) {
-                // Agents Unavailable
-                messageContainer.innerHTML = "Our agents are currently in a meeting and will get back shortly.";
-                webFormContainer.style.display = "block";
-                chatContainer.style.display = "none";
-            } else {
-                // Agents Available, Start Chat
-                chatContainer.style.display = "block";
-                messageContainer.style.display = "none";
-                webFormContainer.style.display = "none";
-            }
-        });
-    }
-
-    window.onload = function() {
-        console.log("Window loaded, checking chat availability...");
-        handleChatAvailability();
-    };
-  </script>
-
-  <!-- Chat Window -->
-  <div id="chatContainer" style="display:none;">
-    <script type="text/javascript" src="https://nuffieldhealth-crm--crmqa.sandbox.my.site.com/ESWHospitalEnquiryWebch1740736256142/assets/js/bootstrap.min.js" onload="initEmbeddedMessaging()"></script>
-  </div>
-
-  <!-- Message When Web Chat is Unavailable -->
-  <div id="offlineMessage" style="display:none;"></div>
-
-  <!-- Web Form for Inquiry -->
-  <div id="webForm" style="display:none;">
-    <form action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST">
-      <input type="hidden" name="oid" value="Your_Salesforce_Org_ID">
-      <input type="hidden" name="retURL" value="Thank_You_Page_URL">
-      
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="last_name" required>
-
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required>
-
-      <label for="subject">Subject:</label>
-      <input type="text" id="subject" name="subject" required>
-
-      <label for="message">Message:</label>
-      <textarea id="message" name="description" required></textarea>
-
-      <button type="submit">Submit</button>
-    </form>
-  </div>
-
-</html>
+			embeddedservice_bootstrap.init(
+				'00D9E0000000pto',
+				'Hospital_Enquiry_Webchat',
+				'https://nuffieldhealth-crm--crmqa.sandbox.my.site.com/ESWHospitalEnquiryWebch1740736256142',
+				{
+					scrt2URL: 'https://nuffieldhealth-crm--crmqa.sandbox.my.salesforce-scrt.com'
+				}
+			);
+		} catch (err) {
+			console.error('Error loading Embedded Messaging: ', err);
+		}
+	};
+</script>
+<script type='text/javascript' src='https://nuffieldhealth-crm--crmqa.sandbox.my.site.com/ESWHospitalEnquiryWebch1740736256142/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
